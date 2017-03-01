@@ -18,45 +18,11 @@ for (i in 2:ncol(data)){
 
 # ACF and PACF of p
 tsdisplay(data$p)
-# The decreasing ACF shows a stationary process
-
-# PACF suggest an AR(1)
-# Let's fit an ARIMA(1, 0, 0) and try variations such as ARIMA(2, 0, 0) and ARIMA(3, 0, 0)
-fit1 <- Arima(data$p, c(1, 0, 0))
-summary(fit1)
-fit2 <- Arima(data$p, c(2, 0, 0))
-summary(fit2)
-fit3 <- Arima(data$p, c(3, 0, 0))
-summary(fit3)
-# AR(3) coefficient is not significant (doing a t-test)
-Acf(fit1$residuals)
-# Some autocorrelation left
-Acf(fit2$residuals)
-# No significant autocorrelation left
-# AR(2) seems to be a good fit
-
+# The slowly decreasing ACF means it's not stationary
 
 # ACF and PACF of Delta p
 tsdisplay(data$Delta_p)
 # The rapidly decreasing ACF shows a stationary process
-
-# PACF suggest an AR(1)
-# Let's fit an ARIMA(1, 0, 0) and try variations such as ARIMA(2, 0, 0) and ARIMA(3, 0, 0)
-fitdelta1 <- Arima(data$Delta_p, c(1, 0, 0))
-summary(fitdelta1)
-fitdelta2 <- Arima(data$Delta_p, c(2, 0, 0))
-summary(fitdelta2)
-fitdelta3 <- Arima(data$Delta_p, c(3, 0, 0))
-summary(fitdelta3)
-# AR(3) and AR(2) coefficient is not significant (doing a t-test)
-Acf(fitdelta1$residuals)
-Acf(fitdelta2$residuals)
-# No significant autocorrelation left
-# AR(1) seems to be a good fit
-
-summary(fitdelta1)
-summary(fit2)
-# fitdelta1 has the lowest AICc, so we may want to choose this model
 
 # Regression between price and dividend
 fit_p_d <- lm(data$p~data$d)
