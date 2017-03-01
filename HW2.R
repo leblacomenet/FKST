@@ -70,7 +70,21 @@ plot(data$d_p)
 # downward trend
 # then a simple exponential smoothing method will not be enough
 # let's then use holt linear trend method to start with
-fitdp <- holt(data$d_p[1:645], h=205)
+fitdp <- holt(data$d_p[1:843], h=12)
 plot(fitdp, type="l")
 lines(data$d_p, col="black")
+
+plot(data$Delta_d_p, type="l")
+tsdisplay(data$Delta_d_p)
+# suggests an AR(1) on the diff
+fitddp <- Arima(data$d_p[1:843], c(1, 1, 0))
+summary(fitddp)
+plot(forecast(fitddp, h=12))
+lines(data$d_p, col="red")
+
+plot(forecast(fitddp, h=12), xlim=c(837, 855))
+lines(data$d_p, col="red")
+plot(forecast(fitdp, h=12), xlim=c(837, 855))
+lines(data$d_p, col="red")
+
 
