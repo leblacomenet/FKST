@@ -4,7 +4,7 @@ library(ggplot2)
 library(fpp)
 library(readxl)
 data <- read_excel("HW2data.xlsx")
-colnames(data) = c("Time", "Delta_d", "d", "Delta_ps", "ps", "d-ps", "Delta_d-ps", "Delta_p", "p", "d-p", "Delta_d-p")
+colnames(data) = c("Time", "Delta_d", "d", "Delta_ps", "ps", "d_ps", "Delta_d_ps", "Delta_p", "p", "d_p", "Delta_d_p")
 data$Time = as.Date(gsub("\\)", "-01",ifelse(nchar(data$Time)>7, gsub("\\(", "-", data$Time), gsub("\\(", "-0", data$Time))), "%Y-%m-%d")
 
 
@@ -56,9 +56,21 @@ Acf(fitdelta2$residuals)
 
 summary(fitdelta1)
 summary(fit2)
+# fitdelta1 has the lowest AICc, so we may want to choose this model
 
 # Regression between price and dividend
 fit_p_d <- lm(data$p~data$d)
 summary(fit_p_d)
 plot(data$d, data$p)
 abline(fit_p_d)
+
+# Forecasting d/p
+
+plot(data$d_p)
+# downward trend
+# then a simple exponential smoothing method will not be enough
+# let's then use holt linear trend method to start with
+fitdp <- holt(data$d_p[1:645], h=205)
+plot(fitdp, type="l")
+lines(data$d_p, col="black")
+
