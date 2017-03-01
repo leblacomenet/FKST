@@ -22,7 +22,7 @@ for (i in 2:ncol(data)){
 # Stationarity and integration
 # ACF and PACF of p
 tsdisplay(data$p)
-# The slowly decreasing ACF shows a stationary
+# The slowly decreasing ACF and the PACF show a stationary process
 
 # ACF and PACF of Delta p
 tsdisplay(data$Delta_p)
